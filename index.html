@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tower E56udf</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .panel {
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid #00ff00;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 1px solid #00ff00;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      color: #ff0000;
+      letter-spacing: 2px;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    .timer-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .timer-label {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    #time {
+      font-size: 64px;
+      color: #ff0000;
+      letter-spacing: 5px;
+      font-weight: bold;
+    }
+
+    .log-section {
+      margin-top: 20px;
+    }
+
+    .log-label {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 5px;
+      letter-spacing: 2px;
+    }
+
+    #log {
+      background-color: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      font-size: 11px;
+      color: #00cc00;
+      line-height: 1.6;
+    }
+
+    #result {
+      display: none;
+      margin-top: 20px;
+      border: 1px solid #ff0000;
+      padding: 15px;
+      text-align: center;
+    }
+
+    #result h2 {
+      color: #ff0000;
+      font-size: 22px;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    #result p {
+      font-size: 12px;
+      color: #ccc;
+      margin: 5px 0;
+      line-height: 1.8;
+    }
+
+    #result .warning {
+      color: #ff0000;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #result .action {
+      color: #ffff00;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="header">
+      <h1>TOWER ACCESS TERMINATED</h1>
+      <p>E56udf - Tehran Central Grid</p>
+    </div>
+
+    <div class="timer-section">
+      <div class="timer-label">TIME UNTIL DISCONNECT</div>
+      <div id="time">20:00</div>
+    </div>
+
+    <div class="log-section">
+      <div class="log-label">// SYSTEM LOG</div>
+      <div id="log"></div>
+    </div>
+
+    <div id="result">
+      <h2>DISCONNECTED</h2>
+      <p>Your connection to the tower has been cut off.</p>
+      <p>The telecom tower has been reset.</p>
+      <p>All your codes have been cleared.</p>
+      <p class="warning">WARNING: Do NOT make any transactions.</p>
+      <p class="action">IMMEDIATELY convert all ETH to BTC.</p>
+    </div>
+  </div>
+
+  <script>
+    var startTime = new Date().getTime();
+    var endTime = startTime + (1200 * 1000); // 20 minutes in milliseconds
+    var swapCount = 0;
+    var timerInterval = null;
+
+    function formatTime(sec) {
+      if (sec < 0) sec = 0;
+      var m = Math.floor(sec / 60);
+      var s = Math.floor(sec % 60);
+      if (m < 10) m = "0" + m;
+      if (s < 10) s = "0" + s;
+      return m + ":" + s;
+    }
+
+    function addLog(msg) {
+      var log = document.getElementById("log");
+      var d = new Date();
+      var h = d.getHours();
+      var mi = d.getMinutes();
+      var s = d.getSeconds();
+      if (h < 10) h = "0" + h;
+      if (mi < 10) mi = "0" + mi;
+      if (s < 10) s = "0" + s;
+      log.innerHTML += "[" + h + ":" + mi + ":" + s + "] " + msg + "<br>";
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function updateTimer() {
+      var now = new Date().getTime();
+      var remaining = (endTime - now) / 1000;
+
+      if (remaining <= 0) {
+        document.getElementById("time").innerHTML = "00:00";
+        document.getElementById("result").style.display = "block";
+        addLog("DISCONNECTED");
+        addLog("Tower E56udf-Tehran reset complete");
+        addLog("All codes cleared");
+        addLog("Parallel connections terminated");
+        clearInterval(timerInterval);
+        return;
+      }
+
+      document.getElementById("time").innerHTML = formatTime(remaining);
+
+      swapCount++;
+      if (swapCount % 4 === 0) addLog("Swap-1: ETH-USDT route verified");
+      if (swapCount % 5 === 0) addLog("Swap-2: BTC-USDC route active");
+      if (swapCount % 6 === 0) addLog("Swap-3: Relay E56udf handshake OK");
+      if (swapCount % 7 === 0) addLog("Swap-4: Cross-chain validation passed");
+
+      if (swapCount > 1000) swapCount = 0;
+    }
+
+    addLog("Countdown initiated...");
+    addLog("MAC: 00:1A:2B:3C:4D:5E bound to E56udf-Tehran");
+    addLog("20 minute disconnect timer started");
+    addLog("Parallel swap connections initiated...");
+
+    timerInterval = setInterval(updateTimer, 1000);
+  </script>
+</body>
+</html>
